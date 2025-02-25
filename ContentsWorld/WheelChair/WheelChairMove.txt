@@ -1,0 +1,31 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+public class WheelChairMove : MonoBehaviour
+{
+    [SerializeField] WheelChair wheelChair;
+    [SerializeField] PhotonView pv;
+    Vector2 axisInput;
+    private void Update()
+    {
+        if(wheelChair.isHolding)
+        {
+            axisInput = new Vector3(InputManager.Instance.axisValue.x, InputManager.Instance.axisValue.y);
+            Move();
+        }
+    }
+
+    void Move()
+    {
+        float horizontal = axisInput.x;
+        float vertical = axisInput.y;
+
+        Vector3 direction = new Vector3(horizontal, 0, vertical);
+        Vector3 finalDirection = new Vector3(horizontal, 0, 1.0f);
+
+        transform.position += direction * 2f * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(finalDirection), Mathf.Deg2Rad * 7);
+    }
+
+}
